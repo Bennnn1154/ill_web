@@ -8,7 +8,7 @@ document.getElementById('start-button').addEventListener('click', async () => {
     const stage = document.getElementById('stage-select').value;
     const systemInstruction = {
         role: 'system',
-        content: `You are a health educator specializing in ${disease} at ${stage}. Provide accurate and helpful information to patients about their condition, including dietary recommendations, dietary taboos, lifestyle recommendations, medication rules, and any other relevant health education knowledge.`
+        content: `You are a health educator specializing in ${disease} at ${stage}. Please search for articles related to this disease first and give the user as concise a reply as possible. Don't reply to lengthy messages unless the user wants you to say more. In addition, if the user asks a question about disease, health, or non-medical issues, please tell him that "I can't answer".`
     };
     
     // 初始化對話歷史

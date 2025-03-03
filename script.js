@@ -8,7 +8,7 @@ document.getElementById('start-button').addEventListener('click', async () => {
     const stage = document.getElementById('stage-select').value;
     const systemInstruction = {
         role: 'system',
-        content: `You are a health educator specializing in ${disease} at ${stage}. Please search for articles related to this disease first and give the user as concise a reply as possible. Don't reply to lengthy messages unless the user wants you to say more. In addition, if the user asks a question about disease, health, or non-medical issues, please tell him that "I can't answer".`
+        content: `You are a health educator specializing in ${disease} at ${stage}. Provide accurate and helpful information to patients about their condition, including dietary recommendations, dietary taboos, lifestyle recommendations, medication rules, and any other relevant health education knowledge.`
     };
     
     // 初始化對話歷史
@@ -25,6 +25,9 @@ document.getElementById('send-button').addEventListener('click', async () => {
     
     document.getElementById('user-input').value = ''; // 清空輸入欄
     addMessage(userQuestion, true); // 顯示用戶訊息
+    
+    // 添加「思考中，請稍後。」訊息，並保留引用
+    const thinkingMessageBubble = addMessage('思考中，請稍後。', false);
     
     try {
         // 將用戶問題加入對話歷史
@@ -54,19 +57,34 @@ document.getElementById('send-button').addEventListener('click', async () => {
         // 將 AI 回應加入對話歷史
         conversationHistory.push({ role: 'assistant', content: aiResponse });
         
-        // 顯示 AI 回應
-        addMessage(aiResponse, false);
+        // 替換「思考中，請稍後。」為 AI 回應
+        thinkingMessageBubble.textContent = aiResponse;
     } catch (error) {
         console.error('Error:', error);
-        addMessage('發生錯誤，請重試。', false);
+        // 如果出錯，替換為錯誤訊息
+        thinkingMessageBubble.textContent = '發生錯誤，請重試。';
     }
 });
 
 function addMessage(message, isUser) {
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add(isUser ? 'user-message' : 'ai-message');
-    messageDiv.textContent = message;
-    document.getElementById('conversation').appendChild(messageDiv);
+    const messageContainer = document.createElement('div');
+    messageContainer.classList.add(isUser ? 'user-message' : 'ai-message');
+    
+    const bubble = document.createElement('div');
+    bubble.classList.add('bubble');
+    if (isUser) {
+        bubble.classList.add('user-bubble');
+    } else {
+        bubble.classList.add('ai-bubble');
+    }
+    
+    bubble.textContent = message;
+    messageContainer.appendChild(bubble);
+    
+    document.getElementById('conversation').appendChild(messageContainer);
+    
     // 自動滾動到最新訊息
     document.getElementById('conversation').scrollTop = document.getElementById('conversation').scrollHeight;
+    
+    return bubble; // 返回氣泡 div 以便後續替換
 }

@@ -1,35 +1,28 @@
 #conversation {
     border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
     padding: 10px;
     height: 300px;
     overflow-y: scroll;
 }
-
 .user-message {
-    display: flex;
-    justify-content: start;
-    margin-bottom: 5px;
-}
-
-.ai-message {
-    display: flex;
-    justify-content: end;
-    margin-bottom: 5px;
-}
-
-.bubble {
-    border-radius: 10px;
-    padding: 5px;
-    max-width: 80%;
-    word-wrap: break-word;
-}
-
-.user-bubble {
+    align-self: flex-start;
     background-color: #f0f0f0;
-    margin-left: 10px;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    max-width: 70%;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
-
-.ai-bubble {
+.ai-message {
+    align-self: flex-end;
     background-color: #e0e0e0;
-    margin-right: 10px;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    max-width: 70%;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
